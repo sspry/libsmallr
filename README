@@ -2,7 +2,10 @@ To compile, run `make`.
 
 Also, note that this is not a library as of yet. Mostly testing and development.
 I haven't bothered to create a 'testing' directory or anything, as really,
-nothing is even done yet.
+nothing is even done yet. Testing only works on x64, as of now, due to me only
+having an x64 computer. I will probably add x86 compatibility soon, all that
+needs to be changed is that the arguments need to be moved from the stack and
+into %edi, %esi, and %edx.
 
 COMPILED LAYOUT (width in bytes):
 
