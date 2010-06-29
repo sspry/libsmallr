@@ -1,0 +1,15 @@
+1) Make it work.
+    * Draw out a plan for the compiled representation.
+    - Code the constructs to represent said compiled form.
+    - Implement it:
+        -- Create function library?
+        -- Use as few functions as necessary.
+
+3) Internals.
+    - Character classes.
+        * Almost done, doesn't support nests.
+
+2) Make it a library.
+    - Update Makefile
+    - Update functions/loaders.
+
