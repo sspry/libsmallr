@@ -7,32 +7,20 @@ having an x64 computer. I will probably add x86 compatibility soon, all that
 needs to be changed is that the arguments need to be moved from the stack and
 into %edi, %esi, and %edx.
 
-COMPILED LAYOUT (width in bytes):
-
-    4 | flags
-    4 | len of string constants section
-    n | zstring data
-    4 | len of character class section
-    n | character class data
-    n | executable code
-
 CALLING:
 
     The executable code should be cast to a pointer of type
-    int(char *, void *), the first being the string to apply the regular
-    expression to, the second shall point to an array of group objects at
-    least the number of groups found in the pattern long, and the function
-    will return an integer representing errors. No errors, or 0, denotes a
-    completely successful match, but that does not mean anything besides 0
-    means failure.
+    int(char *), which will return either 0 or 1. The only
+    argument passed as of yet is the string to apply the regular
+    expression to.
 
 REGISTERS:
     %eax |
     %ebx |
     %ecx |
     %edx | base of "character class" array
-    %esi | string position pointer
-    %edi |
+    %esi |
+    %edi | string position pointer
 
 VARIABLES:
 
@@ -51,7 +39,24 @@ EPILOGUE:
 
 CHECK IF CHARACTER MATCHES:
 
-    cmp
+    cmp (%rdi), $c
+    je $1;
+    ret
+    inc %rdi;
+
+CHECK IF CHARACTER MATCHES DOT:
+
+    If accepting line feeds, ignore first section. Otherwise
+    include it.
+
+    cmp (%rdi), $0xA
+    jne $1;
+    ret;
+
+    cmp (%rdi), $0x00
+    jne $1;
+    ret;
+    inc %rdi;
 
 CHECK IF A STRING MATCHES (predefined num. of chars):
 CHECK IF IN CLASS:
