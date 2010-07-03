@@ -18,46 +18,10 @@ int r_compile(struct regex_t *res, char *pat, int flags)
 
     #define pcmd(cm) *c = cm; c++
     pcmd(0x31); pcmd(0xC0);          // xor %eax, %eax;
-    while(*pat)
-    {
-        if(*pat == '.')
-            r_append_mdot(0, &c);
-        else
-            r_append_mchar(*pat, &c);
-        pat++;
-    }
     pcmd(0xFF); pcmd(0xC0);          // inc %eax;
     pcmd(0xC3);                      // ret;
 
     return 0;
-}
-
-void r_append_mchar(char c, char **exe)
-{
-    #undef pcmd
-    #define pcmd(cm) **exe = cm; (*exe)++
-    pcmd(0x80); pcmd(0x3F); pcmd(c); // cmp (%rdi), $c
-    pcmd(0x74); pcmd(0x01);          // je $1;
-    pcmd(0xC3);                      // ret
-    pcmd(0x48);                      // REX.W
-    pcmd(0xFF); pcmd(0xC7);          // inc %rdi;
-}
-
-void r_append_mdot(int lf, char **exe)
-{
-    #undef pcmd
-    #define pcmd(cm) **exe = cm; (*exe)++
-    if(!lf)
-    {
-        pcmd(0x80); pcmd(0x3F); pcmd(0x0A); // cmp (%rdi), $\n
-        pcmd(0x75); pcmd(0x01);             // jne $1;
-        pcmd(0xC3);                         // ret;
-    }
-    pcmd(0x80); pcmd(0x3F); pcmd(0x00); // cmp (%rdi), $0x00
-    pcmd(0x75); pcmd(0x01);             // jne $1;
-    pcmd(0xC3);                         // ret;
-    pcmd(0x48);                         // REX.W
-    pcmd(0xFF); pcmd(0xC7);             // inc %rdi;
 }
 
 #define add_item(ret, item) ((int *)(ret))[item / 32] |= 1 << (item % 32)

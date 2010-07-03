@@ -19,7 +19,7 @@ int main()
     { puts("FATAL: Bad pattern."); }
 
     int ret = ((int (*)(char *))(mtch.exec))(input);
-    printf("expr returned %d.\n", ret);
+    printf("Returned %d.", ret);
 
     free(mtch.exec);
     return 0;

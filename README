@@ -18,7 +18,7 @@ REGISTERS:
     %eax |
     %ebx |
     %ecx |
-    %edx | base of "character class" array
+    %edx |
     %esi |
     %edi | string position pointer
 
